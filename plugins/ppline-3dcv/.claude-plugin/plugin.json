@@ -1,0 +1,22 @@
+{
+  "name": "ppline-3dcv",
+  "version": "1.0.0",
+  "description": "MCP access to the ProductPardesLine 3D computer-vision & medical-imaging platform: module catalog, sample datasets, blocking compute (single module + multi-node pipelines), project CRUD, GCP AI (2D image processing + image->3D), DICOM I/O and registration QC, curated 3D-CV expert context, and deep-learning model-skills.",
+  "author": {
+    "name": "ProductPardesLine",
+    "url": "https://github.com/1904jonathan/pardesline-mcp-plugin"
+  },
+  "homepage": "https://github.com/1904jonathan/pardesline-mcp-plugin/blob/main/MCP_README.md",
+  "repository": "https://github.com/1904jonathan/pardesline-mcp-plugin",
+  "license": "LicenseRef-ProductPardesLine-Proprietary",
+  "keywords": ["3d-vision", "medical-imaging", "registration", "point-cloud", "mesh", "dicom", "mcp"],
+  "mcpServers": {
+    "ppline-3dcv": {
+      "type": "http",
+      "url": "https://ppline-backend-565128781631.me-west1.run.app/mcp/",
+      "headers": {
+        "X-API-Key": "${PPLINE_API_KEY}"
+      }
+    }
+  }
+}

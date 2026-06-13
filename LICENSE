@@ -1,0 +1,42 @@
+ProductPardesLine — Plugin Distribution License
+Copyright (c) 2026 ProductPardesLine. All rights reserved.
+
+This repository ("the Distribution") contains ONLY client configuration, manifests, and
+documentation that let a Claude Code (or other MCP) client connect to the hosted
+ProductPardesLine MCP service ("the Service"). It contains no platform source code.
+
+1. GRANT (Distribution files only)
+   You are granted a limited, non-exclusive, non-transferable, revocable license to
+   download and use the files in this repository solely for the purpose of configuring
+   an MCP client to connect to the Service. You may not remove or alter the copyright,
+   service endpoints, or authentication mechanism declared in these files.
+
+2. THE SERVICE IS NOT FREE
+   Use of the Service (any MCP tool, resource, compute, or data operation reachable
+   through this Distribution) REQUIRES a valid, paid ProductPardesLine subscription and
+   a corresponding active API key. The configuration in this repository does NOT grant
+   any right to access, use, or process data with the Service. Without a paid
+   subscription and a valid API key, the Service will reject requests.
+
+3. RESTRICTIONS
+   You may not: (a) resell, sublicense, or redistribute access to the Service;
+   (b) circumvent, disable, or attempt to bypass authentication, metering, quota, or
+   billing; (c) share, lease, or expose your API key to third parties; (d) use the
+   Service except in accordance with your subscription plan and the applicable terms of
+   service; (e) represent that this Distribution grants Service access.
+
+4. RESERVATION OF RIGHTS
+   All rights not expressly granted are reserved by ProductPardesLine. No rights are
+   granted to the Service, the platform source code, the underlying models, datasets, or
+   any trademarks.
+
+5. TERMINATION
+   This license terminates automatically if you breach it or if your subscription lapses.
+
+6. NO WARRANTY / LIABILITY
+   THE DISTRIBUTION AND THE SERVICE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+   TO THE MAXIMUM EXTENT PERMITTED BY LAW, PRODUCTPARDESLINE SHALL NOT BE LIABLE FOR ANY
+   CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM OR IN CONNECTION WITH THE DISTRIBUTION,
+   THE SERVICE, OR THEIR USE.
+
+For subscription and licensing inquiries, contact ProductPardesLine.

@@ -1,0 +1,12 @@
+# This repo is config + docs only — nothing to build.
+# Guard against accidental secret / artifact commits.
+.env
+.env.*
+*.key
+*.pem
+**/secrets*
+.DS_Store
+Thumbs.db
+node_modules/
+__pycache__/
+*.pyc

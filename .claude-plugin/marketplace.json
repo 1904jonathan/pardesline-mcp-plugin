@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "ppline-3dcv-tools",
+  "description": "ProductPardesLine — 3D computer-vision & medical-imaging tools (registration, mesh/point-cloud ops, DICOM, image->3D) exposed over MCP.",
+  "owner": {
+    "name": "ProductPardesLine",
+    "url": "https://github.com/1904jonathan/pardesline-mcp-plugin"
+  },
+  "plugins": [
+    {
+      "name": "ppline-3dcv",
+      "source": "./plugins/ppline-3dcv",
+      "description": "Full-parity MCP access to the ProductPardesLine 3D-CV platform: module catalog, sample datasets, blocking compute (single module + multi-node pipelines), project CRUD, GCP AI (2D image processing + image->3D), medical DICOM I/O and registration QC, plus curated 3D-CV expert context and deep-learning model-skills.",
+      "version": "1.0.0",
+      "homepage": "https://github.com/1904jonathan/pardesline-mcp-plugin/blob/main/MCP_README.md",
+      "keywords": ["3d-vision", "medical-imaging", "registration", "point-cloud", "mesh", "dicom", "simpleitk", "open3d", "pyvista"]
+    }
+  ]
+}
