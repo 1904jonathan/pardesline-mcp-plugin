@@ -22,41 +22,39 @@ Server reference: [`../../MCP_README.md`](../../MCP_README.md).
 - **Context resources** — `context://expert/{topic}` (14 curated 3D-CV experts) and
   `context://model/{model_id}` (DL training knowledge).
 
-## Install
+## Install (sign in with your email — no API key)
 
-1. **Get an API key.** Create a project in the platform and generate its `pl_…` key
-   (web UI project settings, or via the MCP tool `generate_project_api_key` from an
-   already-authenticated session).
+Authentication is **OAuth 2.1**: there is no key to copy and no env var to set. The
+first time Claude Code talks to the server, your browser opens a PardesLine sign-in
+page; enter your **authorized email + the 6-digit code** emailed to you, and Claude
+Code is connected automatically.
 
-2. **Export it** so the plugin can inject it as the `X-API-Key` header:
-
-   ```bash
-   # macOS / Linux
-   export PPLINE_API_KEY=pl_your_key_here
-   ```
-   ```powershell
-   # Windows PowerShell
-   $env:PPLINE_API_KEY = "pl_your_key_here"
-   ```
-
-   The env var is read at MCP-server startup, so set it **before** launching Claude Code
-   (or set it permanently in your shell profile).
-
-3. **Add this repo as a marketplace and install:**
+1. **Add this repo as a marketplace and install:**
 
    ```bash
    /plugin marketplace add 1904jonathan/pardesline-mcp-plugin
    /plugin install ppline-3dcv@ppline-3dcv-tools
    ```
 
-4. **Approve** the MCP server when prompted, then `/mcp` should list `ppline-3dcv` as
-   connected. Try: *"list the modules via ppline-3dcv"*.
+2. **Run `/mcp`**, pick `ppline-3dcv`, choose **Authenticate**. Your browser opens the
+   PardesLine sign-in page → enter your email → enter the emailed code → you're returned
+   to the terminal, connected. Try: *"list the modules via ppline-3dcv"*.
+
+   > Your email must be on the platform allowlist with API access. Registration-only
+   > accounts cannot connect via MCP. Contact your administrator to be added.
+
+### Prefer a one-liner without the plugin?
+
+```bash
+claude mcp add --transport http ppline-3dcv https://ppline-backend-565128781631.me-west1.run.app/mcp
+```
+
+Then `/mcp` → Authenticate (same browser sign-in). No marketplace, no key, no env var.
 
 ## Configuration
 
-| Env var | Required | Purpose |
-|---------|----------|---------|
-| `PPLINE_API_KEY` | yes | Your `pl_…` project key, expanded into the `X-API-Key` header. |
+No configuration required — OAuth handles credentials. Tokens are stored securely by
+Claude Code and refreshed automatically.
 
 The endpoint URL is hard-wired to the production Cloud Run service in
 [`.claude-plugin/plugin.json`](.claude-plugin/plugin.json). For **local development**

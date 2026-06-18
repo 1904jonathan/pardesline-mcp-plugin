@@ -13,10 +13,7 @@
   "mcpServers": {
     "ppline-3dcv": {
       "type": "http",
-      "url": "https://ppline-backend-565128781631.me-west1.run.app/mcp/",
-      "headers": {
-        "X-API-Key": "${PPLINE_API_KEY}"
-      }
+      "url": "https://ppline-backend-565128781631.me-west1.run.app/mcp/"
     }
   }
 }

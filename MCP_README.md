@@ -75,22 +75,21 @@ frontend-architecture, backend-architecture, devops-infrastructure`) and
 > needs `roles/run.invoker` on them (already granted — the web routers use the
 > same path).
 
-## Authentication
+## Authentication — OAuth 2.1 (browser email+OTP, no API key)
 
-Reuses the existing per-project **`X-API-Key`** (same `validate_api_key()` as
-`/api/execute`). Every request must send a valid `pl_…` key as the `X-API-Key`
-header (or `Authorization: Bearer pl_…`). Usage is metered via
-`increment_api_usage()`.
+Authenticate with a **browser sign-in** (email + 6-digit OTP), not a static key. On the
+first call Claude Code gets a `401` + `WWW-Authenticate` pointing at the server's OAuth
+metadata, registers itself (RFC 7591), opens your browser to the PardesLine sign-in page
+(PKCE S256), and — after you enter your allowlisted email + the emailed code — receives a
+Bearer token automatically. Access is gated by the email allowlist + API-access tier;
+usage is metered per user.
 
 ## Connect from Claude Code (without the plugin)
 
-Prefer the plugin one-liner below. If you'd rather register the server directly:
-
 ```bash
-# Generate an API key in your project settings first, then:
 claude mcp add --transport http ppline-3dcv \
-  https://ppline-backend-565128781631.me-west1.run.app/mcp \
-  --header "X-API-Key: pl_your_key_here"
+  https://ppline-backend-565128781631.me-west1.run.app/mcp
+# then: /mcp → ppline-3dcv → Authenticate (browser email+OTP sign-in)
 ```
 
 Then, inside Claude Code, the model can read `context://expert/simpleitk`,
@@ -103,12 +102,12 @@ The server is also packaged as a **Claude Code plugin** under
 marketplace [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json):
 
 ```bash
-export PPLINE_API_KEY=pl_your_key_here        # PowerShell: $env:PPLINE_API_KEY="pl_..."
 /plugin marketplace add 1904jonathan/pardesline-mcp-plugin
 /plugin install ppline-3dcv@ppline-3dcv-tools
+# then: /mcp → ppline-3dcv → Authenticate (browser email+OTP sign-in)
 ```
 
-The plugin declares the prod HTTP MCP server inline (`X-API-Key: ${PPLINE_API_KEY}`)
+The plugin declares the prod HTTP MCP server inline (no `headers` block — OAuth)
 **and bundles 8 token-efficient skills** (`using-ppline` + 7 domain skills) that embed
 the module catalog so a remote agent runs `run_job` / `run_pipeline` without exploratory
 `list_modules` / `get_module_info` round-trips. Skills ship in the plugin (NOT in the

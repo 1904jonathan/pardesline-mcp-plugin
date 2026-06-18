@@ -75,8 +75,9 @@ Geometry units are the data's own (Open3D/PyVista samples ~unit-scale; medical v
 
 ## Auth, metering & file lifecycle (essentials)
 
-- **Auth**: every call needs the project `X-API-Key` (`pl_…`) — the plugin injects it from
-  `$PPLINE_API_KEY`. Missing/invalid → 401.
+- **Auth**: OAuth 2.1 — the user signs in once via the browser (email + OTP) and Claude
+  Code sends a Bearer token automatically. No API key / env var. Missing/expired token →
+  401 (re-authenticate via `/mcp`).
 - **Metering**: compute tools meter usage (best-effort); no tier gating yet. Discovery,
   `use_sample`, `upload_file` and project-CRUD don't meter.
 - **file_id**: a bare UUID. Inputs live in *uploads*, results in *outputs* (downloadable at

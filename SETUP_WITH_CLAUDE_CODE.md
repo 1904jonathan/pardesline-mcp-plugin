@@ -15,9 +15,9 @@ skills — no platform source code. Do the following, stopping to report if anyt
 off:
 
 1. Confirm there are no secrets staged: search the working tree for `pl_`, `secret`,
-   `password`, `DATABASE_URL`, `ANTHROPIC_API_KEY`, private keys. The only API key
-   reference allowed is the literal placeholder `pl_your_key_here` and the env-var
-   `${PPLINE_API_KEY}`. Abort and tell me if you find anything else.
+   `password`, `DATABASE_URL`, `ANTHROPIC_API_KEY`, private keys. The plugin uses OAuth
+   (no API key), so there should be **no** `pl_…` or `${PPLINE_API_KEY}` references at
+   all. Abort and tell me if you find anything else.
 2. Verify `gh auth status`. If not authenticated, tell me to run `gh auth login` first.
 3. Create the PUBLIC GitHub repo and push:
      gh repo create 1904jonathan/pardesline-mcp-plugin --public --source=. --remote=origin \
@@ -48,10 +48,9 @@ git push -u origin main
 ## Verify end-to-end (any machine with Claude Code)
 
 ```bash
-export PPLINE_API_KEY=pl_your_key_here     # PowerShell: $env:PPLINE_API_KEY="pl_..."
 /plugin marketplace add 1904jonathan/pardesline-mcp-plugin
 /plugin install ppline-3dcv@ppline-3dcv-tools
-/mcp        # ppline-3dcv should show "connected"
+/mcp        # pick ppline-3dcv → Authenticate → browser email+OTP sign-in → "connected"
 ```
 
 ## Keeping it in sync with the private platform repo
