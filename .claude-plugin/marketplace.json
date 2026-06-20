@@ -11,7 +11,7 @@
       "name": "ppline-3dcv",
       "source": "./plugins/ppline-3dcv",
       "description": "Full-parity MCP access to the ProductPardesLine 3D-CV platform: module catalog, sample datasets, blocking compute (single module + multi-node pipelines), project CRUD, GCP AI (2D image processing + image->3D), medical DICOM I/O and registration QC, scientific paper search (OpenAlex), LaTeX/Beamer presentation generation, a scientific-writing skill suite (papers, theses, slides, PlotNeuralNet architecture diagrams, venue compliance), plus curated 3D-CV expert context and deep-learning model-skills.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "homepage": "https://github.com/1904jonathan/pardesline-mcp-plugin/blob/main/MCP_README.md",
       "keywords": ["3d-vision", "medical-imaging", "registration", "point-cloud", "mesh", "dicom", "simpleitk", "open3d", "pyvista"]
     }
