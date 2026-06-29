@@ -7,8 +7,7 @@ description: >-
   Use whenever the user wants to run point-cloud / mesh / registration / SDF /
   segmentation / LiDAR / DICOM / image->3D operations on the platform. Routes to all 12
   other ppline-3dcv skills (domain skills + the mcp-tool-reference, data-io-and-files,
-  visualization-and-viewers, samples-catalog and expert-context-and-models references +
-  the LaTeX scientific-writing suite: paper / thesis / beamer / PlotNeuralNet / venue-standards).
+  visualization-and-viewers, samples-catalog and expert-context-and-models references).
 ---
 
 # Using ProductPardesLine over MCP
@@ -94,7 +93,7 @@ Geometry units are the data's own (Open3D/PyVista samples ~unit-scale; medical v
 - `context://model/{model_id}` — deep-learning model-skill (architecture + training recipe).
 - What each topic covers + how to read these: `ppline-3dcv:expert-context-and-models`.
 
-## Where to go next — all 19 sibling skills
+## Where to go next — all 12 sibling skills
 
 **Domain (run algorithms)**
 | Task | Skill |
@@ -106,17 +105,6 @@ Geometry units are the data's own (Open3D/PyVista samples ~unit-scale; medical v
 | 2D AI on images + image→3D (.glb) | `ppline-3dcv:ai-3d-generation` |
 | Multi-step pipelines + projects (save/run DAG, API keys) | `ppline-3dcv:pipelines-and-projects` |
 | Train/fine-tune a DL model on your own data | `ppline-3dcv:deep-learning-models` |
-| Search scientific papers + build LaTeX/Beamer presentations (PDF) | `ppline-3dcv:research-and-presentations` |
-
-**Scientific writing (LaTeX) — compile via `compile_latex` / `create_presentation`, no local TeX**
-| Task | Skill |
-|------|-------|
-| Math/figures/tables/bib/compilation backbone (read first) | `ppline-3dcv:latex-scientific-core` |
-| Conference/journal paper (IEEEtran, ACM, LNCS, arXiv) | `ppline-3dcv:latex-paper-ieee` |
-| MSc/PhD thesis (book/report, chapters, frontmatter) | `ppline-3dcv:latex-thesis-research` |
-| Academic slides (themes, overlays, columns) | `ppline-3dcv:latex-beamer-scientific` |
-| Neural-net architecture diagrams (PlotNeuralNet) | `ppline-3dcv:latex-plotneuralnet-architectures` |
-| Venue compliance (NeurIPS/CVPR/MICCAI/Nature…) | `ppline-3dcv:latex-venue-standards` |
 
 **Reference / cross-cutting**
 | Need | Skill |
