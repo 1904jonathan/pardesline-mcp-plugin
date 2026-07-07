@@ -22,12 +22,15 @@ deployed, hosted MCP endpoint. All compute runs server-side and is authenticated
    ```
 
 2. **Authenticate.** Run `/mcp`, pick `ppline-3dcv`, choose **Authenticate**. Your
-   browser opens a PardesLine sign-in page → enter your **authorized email** → enter the
+   browser opens a PardesLine sign-in page → enter your **email** → enter the
    **6-digit code** emailed to you → you're returned to the terminal, **connected**.
    Try: *"list the modules via ppline-3dcv"*.
 
-   > Your email must be on the platform allowlist with API access (registration-only
-   > accounts cannot connect via MCP). Contact your administrator to be added.
+   > **Self-serve**: any email can sign up — new accounts get a **3-day free trial
+   > with full access** (including MCP). After the trial, keeping MCP access requires
+   > a subscription with the **API Access** add-on — see the pricing at
+   > [dev.pardesline.com](https://dev.pardesline.com/#pricing); subscribe directly
+   > in the app at [appbeta.pardesline.com](https://appbeta.pardesline.com/?checkout=1).
 
 Prefer no plugin? One command does the same (OAuth still applies):
 
@@ -73,9 +76,10 @@ See [`MCP_README.md`](MCP_README.md) for the full tool reference and
 ## License & access
 
 **Proprietary** — see [LICENSE](LICENSE). The files in this repo are free to download and
-use *only* to configure an MCP client. **The MCP Service itself is a paid product:** every
-tool/compute call requires a valid **paid ProductPardesLine subscription** and an
-authorized account (allowlisted email with API access). Without a subscription, the hosted
-server rejects your sign-in. This repo grants **no** access to the Service.
+use *only* to configure an MCP client. **The MCP Service itself is a paid product:** after
+the 3-day free trial, every tool/compute call requires an active **PardesLine subscription
+with the API Access add-on** ([pricing](https://dev.pardesline.com/#pricing)). Without it,
+the hosted server rejects your sign-in and tool calls. This repo grants **no** access to
+the Service.
 
 © 2026 ProductPardesLine. All rights reserved.
