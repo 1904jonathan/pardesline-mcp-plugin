@@ -1,6 +1,6 @@
 {
   "name": "ppline-3dcv",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "MCP access to the ProductPardesLine 3D computer-vision & medical-imaging platform: module catalog, sample datasets, blocking compute (single module + multi-node pipelines), project CRUD, GCP AI (2D image processing + image->3D), DICOM I/O and registration QC, curated 3D-CV expert context, and deep-learning model-skills.",
   "author": {
     "name": "ProductPardesLine",

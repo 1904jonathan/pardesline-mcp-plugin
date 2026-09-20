@@ -6,11 +6,16 @@ clouds, meshes, registration, volumes, DICOM, image→3D).
 
 This repo ships **only** a Claude Code marketplace + plugin manifest + bundled skills.
 It contains **no platform source code** — the plugin points Claude Code at the already
-deployed, hosted MCP endpoint. All compute runs server-side and is authenticated with
-**OAuth** (browser email sign-in) — no API key to copy, no env var to set.
+deployed, hosted MCP endpoint. All compute runs server-side.
 
-> The exact same content is also downloadable as a `.zip` from the platform UI. This
-> repo is the **git install** path: `/plugin marketplace add …`.
+**Any MCP client works**, not only Claude Code — see
+[Other MCP clients](#other-mcp-clients-codex-cursor-vs-code-scripts). Two credentials
+are accepted:
+
+| Credential | Where it comes from | Use it when |
+|---|---|---|
+| **OAuth** (browser email sign-in) | the client negotiates it — nothing to copy | the client runs where your browser can reach it (your own machine) |
+| **API key** (`pl_…`) | app → avatar menu → **API keys**, or `POST /api/keys` | headless: SSH, a container, CI — where the OAuth callback to `127.0.0.1` never arrives |
 
 ## Install (Claude Code) — sign in with your email
 
@@ -26,17 +31,93 @@ deployed, hosted MCP endpoint. All compute runs server-side and is authenticated
    **6-digit code** emailed to you → you're returned to the terminal, **connected**.
    Try: *"list the modules via ppline-3dcv"*.
 
-   > **Self-serve**: any email can sign up — new accounts get a **3-day free trial
-   > with full access** (including MCP). After the trial, keeping MCP access requires
-   > a subscription with the **API Access** add-on — see the pricing at
-   > [dev.pardesline.com](https://dev.pardesline.com/#pricing); subscribe directly
-   > in the app at [appbeta.pardesline.com](https://appbeta.pardesline.com/?checkout=1).
+   > **Self-serve**: any email can sign up. New accounts get a **3-day trial with full
+   > access**, then drop to the **Free plan — which still includes MCP**: 1,000 API/MCP
+   > calls, 30 CPU jobs and 10 registration jobs per month, 1 GB storage, no card. A
+   > paid plan buys GPU tools and higher quotas — see
+   > [pricing](https://dev.pardesline.com/#pricing) or subscribe in the app at
+   > [appbeta.pardesline.com](https://appbeta.pardesline.com/?checkout=1).
 
 Prefer no plugin? One command does the same (OAuth still applies):
 
 ```bash
 claude mcp add --transport http ppline-3dcv https://ppline-backend-565128781631.me-west1.run.app/mcp
 ```
+
+## Other MCP clients (Codex, Cursor, VS Code, scripts)
+
+The server is a standard **Streamable HTTP** MCP endpoint with OAuth 2.1 discovery, so
+any compliant client connects to the same URL:
+
+```
+https://ppline-backend-565128781631.me-west1.run.app/mcp
+```
+
+### Codex CLI
+
+```bash
+codex mcp add pardesline --url https://ppline-backend-565128781631.me-west1.run.app/mcp
+```
+
+That command **starts the browser sign-in itself** (email + 6-digit code). If you add
+the server by hand in `~/.codex/config.toml` instead, nothing will authenticate you —
+Codex just reports `Not logged in` and every call fails. Run `codex mcp login pardesline`
+to finish, and raise the two default timeouts, which are far too short for a platform
+that scales to zero and runs real 3D jobs:
+
+```toml
+[mcp_servers.pardesline]
+url = "https://ppline-backend-565128781631.me-west1.run.app/mcp"
+startup_timeout_sec = 180   # default 10 — a cold instance needs ~30 s
+tool_timeout_sec = 900      # default 60 — run_job blocks until the job is done
+```
+
+Headless (SSH, container, CI), where no browser can reach `127.0.0.1`, use a key:
+
+```bash
+export PARDESLINE_API_KEY=pl_...
+codex mcp add pardesline --url https://ppline-backend-565128781631.me-west1.run.app/mcp \
+  --bearer-token-env-var PARDESLINE_API_KEY
+```
+
+### Cursor / VS Code / any `mcp.json`
+
+```json
+{
+  "mcpServers": {
+    "ppline-3dcv": {
+      "type": "http",
+      "url": "https://ppline-backend-565128781631.me-west1.run.app/mcp"
+    }
+  }
+}
+```
+
+Sign-in happens in the browser on first use. For a headless setup, add the key instead:
+`"headers": { "X-API-Key": "pl_..." }`.
+
+### Scripts (Python SDK)
+
+```python
+from mcp import ClientSession
+from mcp.client.streamable_http import streamablehttp_client
+
+URL = "https://ppline-backend-565128781631.me-west1.run.app/mcp"
+async with streamablehttp_client(URL, headers={"X-API-Key": "pl_..."}) as (r, w, _):
+    async with ClientSession(r, w) as session:
+        await session.initialize()
+        print([t.name for t in (await session.list_tools()).tools])
+```
+
+### Troubleshooting
+
+| Symptom | Cause and fix |
+|---|---|
+| Client says **needs authentication / not logged in**, every call 401 | Nothing signed you in yet. Claude Code: `/mcp` → **Authenticate**. Codex: `codex mcp login pardesline`. Or use an API key. |
+| **Timeout** on connect | The service scales to zero; a cold instance takes ~30 s. Raise the client's startup timeout (Codex: `startup_timeout_sec`). |
+| **Timeout** on `run_job` / `generate_3d_from_image` | These block until the job finishes (a GPU job can take minutes). Raise the per-tool timeout (Codex: `tool_timeout_sec`). |
+| `Protected resource … does not match expected …` | Your client and the server disagree on the origin. Use the exact URL above, without a redirect in front of it. |
+| **402** with a quota message | Monthly Free-plan quota reached; it resets next month, or upgrade. |
 
 ## What's inside
 
@@ -71,15 +152,15 @@ See [`MCP_README.md`](MCP_README.md) for the full tool reference and
   an L4 GPU with cold starts (~60–120 s when scaled to zero).
 - The endpoint URL is the production Cloud Run service, hard-wired in the plugin
   manifest. No secrets live in this repo — you sign in via OAuth (email + OTP); tokens
-  are stored securely by Claude Code and refreshed automatically.
+  are stored securely by your client and refreshed automatically.
 
 ## License & access
 
 **Proprietary** — see [LICENSE](LICENSE). The files in this repo are free to download and
-use *only* to configure an MCP client. **The MCP Service itself is a paid product:** after
-the 3-day free trial, every tool/compute call requires an active **PardesLine subscription
-with the API Access add-on** ([pricing](https://dev.pardesline.com/#pricing)). Without it,
-the hosted server rejects your sign-in and tool calls. This repo grants **no** access to
-the Service.
+use *only* to configure an MCP client. Using the hosted Service requires a PardesLine
+account: the **Free plan includes MCP** within its monthly quotas, and GPU tools plus
+higher quotas require a paid plan ([pricing](https://dev.pardesline.com/#pricing)).
+An account whose access is paused is refused at sign-in and on every tool call. This
+repo grants **no** access to the Service.
 
 © 2026 ProductPardesLine. All rights reserved.

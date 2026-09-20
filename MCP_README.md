@@ -69,20 +69,28 @@ full-screen viewer / registration-studio URLs.
 frontend-architecture, backend-architecture, devops-infrastructure`) and
 `context://model/{model_id}` for model-skill knowledge.
 
-> **Compute is metered** (`increment_api_usage`, best-effort) but **not tier-gated
-> yet** — billing tiers / quotas are the next step before public launch.
+> **Compute is metered and quota-gated** per account: an over-quota `tools/call`
+> comes back as a JSON-RPC error carrying the limit and the upgrade link.
 > The two AI tools proxy external Cloud Run services; the backend service account
 > needs `roles/run.invoker` on them (already granted — the web routers use the
 > same path).
 
-## Authentication — OAuth 2.1 (browser email+OTP, no API key)
+## Authentication — OAuth 2.1, or an API key when there is no browser
 
-Authenticate with a **browser sign-in** (email + 6-digit OTP), not a static key. On the
-first call Claude Code gets a `401` + `WWW-Authenticate` pointing at the server's OAuth
-metadata, registers itself (RFC 7591), opens your browser to the PardesLine sign-in page
-(PKCE S256), and — after you enter your allowlisted email + the emailed code — receives a
-Bearer token automatically. Access is gated by the email allowlist + API-access tier;
-usage is metered per user.
+**OAuth 2.1 (default).** On the first call the client gets a `401` +
+`WWW-Authenticate` pointing at the server's OAuth metadata, registers itself
+(RFC 7591), opens your browser on the PardesLine sign-in page (PKCE S256), and — after
+your email + the emailed 6-digit code — receives a Bearer token automatically. Claude
+Code, Codex and Cursor each do this on their own, and refresh the token for you.
+
+**API key (`pl_…`).** OAuth needs a browser able to reach a `127.0.0.1` listener, which
+does not exist over SSH, inside a container or in CI. Those callers send the same key the
+SDK and REST API use — `Authorization: Bearer pl_…` or `X-API-Key: pl_…` — minted in the
+app (avatar menu → **API keys**) or via `POST /api/keys`, and revocable there.
+
+Both credentials resolve to the same account, so plan, quotas and metering are identical.
+Sign-up is self-serve (no allowlist): the Free plan includes MCP within its monthly
+quotas; GPU tools need a paid plan.
 
 ## Connect from Claude Code (without the plugin)
 
